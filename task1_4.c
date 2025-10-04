@@ -12,4 +12,5 @@ int main() {
         printf("%5d\t%8.1f\n", cels, fahr);
         cels = cels + step;
     }
+    return 0;
 }
