@@ -1,6 +1,10 @@
 #include <stdio.h>
 
 int main() {
-    printf("EOF: %d\n", EOF);
-    return 0;
+    long nc;
+    nc = 0;
+    while (getchar() != EOF){
+        ++nc;
+    }
+    printf("%ld\n", nc);
 }
