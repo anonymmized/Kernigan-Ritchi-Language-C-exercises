@@ -29,6 +29,10 @@ int balance_getline(int lim) {
     s[i] = '\0';
     int in_s_quotes = 0, in_m_quotes = 0, in_left_brackets = 0, in_right_brackets = 0;
     for (int i = 0; s[i] != '\0'; i++) {
+        if (s[i] == '\\' && (s[i + 1] == '"' || s[i + 1] == '\'')) {
+            i++;
+            continue;
+        }
         if (s[i] == '*' && s[i + 1] == '/') {
             in_ml_comm = 0;
             i++;
