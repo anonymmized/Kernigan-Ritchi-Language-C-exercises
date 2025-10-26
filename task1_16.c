@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+char* dynamic_getline(void);
+
 char* dynamic_getline(void) {
     int c, size = 10, i = 0;
     char* buffer = malloc(size);
