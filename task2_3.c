@@ -1,3 +1,4 @@
+// УЧИТЕСЬ ПОКА ЖИВ
 #include <stdio.h>
 #include <ctype.h>
 
