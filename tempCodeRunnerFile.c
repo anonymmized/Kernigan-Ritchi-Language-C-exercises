@@ -1,1 +1,0 @@
-len = m_getline(line, MAXLINE)
