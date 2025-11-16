@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <math.h>
+#include <string.h>
 
 #define MAXOP 100
 #define NUMBER '0'
@@ -92,6 +93,18 @@ int getop(char s[]) {
         }
     }
 
+    if(isalpha(c)) {
+        i = 0;
+        while (isalpha(s[i++] = c)) {
+            c = getch();
+        }
+        s[i - 1] = '\0';
+        if (c != EOF) {
+            ungetch(c);
+        }
+        return 'F';
+    }
+
     if (!isdigit(c) && c != '.')
         return c;
 
@@ -169,6 +182,22 @@ int main() {
 
         case 'c': 
             clear_stack();
+            break;
+
+        case 'F':
+            if (strcmp(s, "sin") == 0) {
+                push(sin(pop()));
+            }
+            else if (strcmp(s, "exp") == 0) {
+                push(exp(pop()));
+            }
+            else if (strcmp(s, "pow") == 0) {
+                double op2 = pop();
+                push(pow(pop(), op2));
+            }
+            else {
+                printf("unknown function %s\n", s);
+            }
             break;
 
         case '\n':
