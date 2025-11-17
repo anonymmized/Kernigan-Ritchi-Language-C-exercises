@@ -26,6 +26,17 @@ void ungetch(int c) {
         buf[bufp++] = c;
 }
 
+void ungets(char s[]) {
+    if (bufp >= BUFSIZE) {
+        printf("ungets: too many characters");
+    }
+    else {
+        for (int i = strlen(s) - 1; s[i] >= 0; i--) {
+            ungetch(s[i]);
+        }
+    }
+}
+
 void push(double f) {
     if (sp < MAXVAL)
         val[sp++] = f;
