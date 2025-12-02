@@ -64,15 +64,23 @@ void qsort(void *v[], int left, int right, int rev, int (*comp)(void *, void *))
         
     }
     swap(v, left, last);
-    qsort(v, left, last-1, comp);
-    qsort(v, last, right+1, comp);
+    qsort(v, left, last-1, rev, comp);
+    qsort(v, last, right+1, rev, comp);
+}
+
+void tolower(char *s) {
+    for (char *p = s; *p != '\0'; p++) {
+        if (*p >= 'A' && *p <= 'Z') {
+            *p += ('a' - 'A');
+        }
+    }
 }
 
 
-
 int main(int argc, char *argv[]) {
-    int numeric = 0, rev = 0;
+    int numeric = 0, rev = 0, f = 0;
     int nlines;
+    int c;
     while (--argc && (*++argv)[0] == '-') {
         while (c = *++argv[0]) {
             switch (c) {
@@ -82,7 +90,10 @@ int main(int argc, char *argv[]) {
                 case 'r':
                     rev = 1;
                     break;
-                case default:
+                case 'f':
+                    f = 1;
+                    break;
+                default:
                     printf("error: wrong argument: %c\n", c);
                     argc = 0;
                     break;
@@ -90,6 +101,11 @@ int main(int argc, char *argv[]) {
         }
     }  
     if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
+        if (f == 1) {
+            for (int i = 0; i < nlines; i++) {
+                tolower(lineptr[i]);
+            }
+        }
         qsort((void **) lineptr, 0, nlines - 1, rev, (int (*)(void*, void*))(numeric ? numcmp : strcmp));
         writelines(lineptr, nlines);
         return 0;
