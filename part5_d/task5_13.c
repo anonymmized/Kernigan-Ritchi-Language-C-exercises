@@ -29,7 +29,15 @@ int aatoi(char *s) {
 int main(int argc, char *argv[]) {
     int len;
     char line[MAXLINE];
-    int last_strings = (argc < 2) ? LAST : aatoi(argv[1]);
+    if (argc < 2) {
+        printf("Usage: tail -n [num]\n");
+        return 1;
+    }
+    int last_strings = (argc < 3) ? LAST : aatoi(argv[2]);
+    if (strcmp(argv[1], "-n") != 0) {
+        printf("Wrong argument\nUsage: tail -n [num]\n");
+        return 1;
+    }
     if (last_strings <= 0) last_strings = LAST;
     char *buffer[last_strings];
     int i = 0;
