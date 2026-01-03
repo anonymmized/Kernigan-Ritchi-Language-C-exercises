@@ -1,18 +1,15 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 
-#define MAXLINE 1000
-
-void my_printf(void) {
-    int c;
-    int len = 0;
+int my_printf(void) {
+    int c, len = 0;
     while ((c = getchar()) != EOF) {
         if (c == '\n') {
             printf("\\n\n");
             len = 0;
         } else if (c == '\t') {
-            printf("\\t");
+            printf("\\t\t");
             len += 2;
         } else if (isprint((unsigned char)c)) {
             putchar(c);
@@ -27,6 +24,7 @@ void my_printf(void) {
             len = 0;
         }
     }
+    return 0;
 }
 
 int main() {
