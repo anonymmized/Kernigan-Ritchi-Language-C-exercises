@@ -2,6 +2,48 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <stdlib.h>
+#include <dirent.h>
+
+#ifndef DIRSIZ
+#define DIRSIZ 14
+#endif
+
+#define NAME_MAX 14
+#define MAX_PATH 1024
+
+typedef struct {
+    long ino;
+    char name[NAME_MAX+1];
+}Dirent;
+
+void fsize(const char *name);
+void dirwalk(const char *dir, void (*fcn)(const char *));
+
+void dirwalk(const char *dir, void (*fcn)(const char *)) {
+    char name[MAX_PATH];
+    struct dirent *dp;
+    DIR *dfd;
+
+    if ((dfd = opendir(dir)) == NULL) {
+        fprintf(stderr, "dirwalk: cannot open %s\n", dir);
+        return;
+    }
+
+    while ((dp = readdir(dfd)) != NULL) {
+        if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0) {
+            continue;
+        }
+        if (strlen(dir) + strlen(dp->d_name) + 2 > sizeof(name)) {
+            fprintf(stderr, "dirwalk: too long name %s/%s\n", dir, dp->d_name);
+            return;
+        } else {
+            sprintf(name, "%s/%s", dir, dp->d_name);
+            (*fcn)(name);
+        }
+    }
+    closedir(dfd);
+}
 
 static void print_filetype_and_perms(mode_t m) {
     if (S_ISREG(m)) putchar('-');
@@ -41,6 +83,10 @@ void fsize(const char *name) {
         return;
     }
 
+    if (S_ISDIR(st.st_mode)) {
+        dirwalk(name, fsize);
+    }
+
     printf("============================================\n");
     printf("path: %s\n", name);
 
@@ -58,6 +104,8 @@ void fsize(const char *name) {
     print_time("mtime", st.st_mtime);
     print_time("ctime", st.st_ctime);
 }
+
+
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
